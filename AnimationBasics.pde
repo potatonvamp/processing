@@ -1,24 +1,52 @@
-float x, y, vx, vy, g;
+float x, y, radius, vx, vy, ax, ay, g;
+color newColor;
+
+int ballCount;
+
+ArrayList<Ball> ballList = new ArrayList<Ball>();
 
 void setup() {
   size(800, 600);
-  x = width / 2;
-  y = 20;
-  vx = 0;
-  vy = 0;
   g = 0.5;
+  for (int i = 0; i < 1; i++) {
+    x = random(width);
+    y = random(height);
+    radius = random(40);
+    vx = 0;
+    while (vx == 0) {
+      vx = (float)(int)(random(21) - 10);
+    }
+    vy = 0;
+    while (vy == 0) {
+      vy = (float)(int)(random(21) - 10);
+    }
+    newColor = color(random(256), random(256), random(256));
+    Ball one = new Ball(x, y, radius, vx, vy, 0, 0, newColor);
+    ballList.add(one);
+  }
 }
 
 void draw() {
   background(0);
-  stroke(255);
-  line(0, height * 7 / 8, width, height * 7 / 8);
-  fill(255, 0, 0);
-  circle(x, y, 20);
-  vy += g;
-  x += vx;
-  y += vy;
-  if (y+20 >= height * 7 / 8) {
-    vy = -1 * vy * 0.8;
+  ballCount = ballList.size();
+  for (int i = 0; i < ballCount; i++) {
+    Ball ball =ballList.get(i);
+    ball.drawBall();
+    if (ball.moveBall()) {
+      x = random(width);
+      y = random(height);
+      radius = random(40);
+      vx = 0;
+      while (vx == 0) {
+        vx = (float)(int)(random(21) - 10);
+      }
+      vy = 0;
+      while (vy == 0) {
+        vy = (float)(int)(random(21) - 10);
+      }
+      radius = random(40);
+      newColor = color(random(256), random(256), random(256));
+      Ball one = new Ball(x, y, radius, vx, vy, 0, 0, newColor);
+      ballList.add(one);
+    }
   }
-}
